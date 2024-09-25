@@ -15,7 +15,7 @@ export class Agency extends BaseModel<IAgency, Partial<IAgency>> implements IAge
   public primary_office_phone?: string;
   public primary_office_email?: string;
   public website?: string;
-  public is_active!: boolean; // Inherited from base interface
+  public is_active!: boolean;
 
   static initModel() {
     Agency.init(

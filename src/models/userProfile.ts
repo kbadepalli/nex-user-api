@@ -9,10 +9,8 @@ export class UserProfile extends BaseModel<IUserProfile, Partial<IUserProfile>> 
   public first_name!: string;
   public last_name!: string;
   public email!: string;
-  public password_hash!: string;
   public phone_number?: string;
-  public role!: string;
-  public status!: string;
+  public role_id!: string;
   public profile_image_url?: string;
   public agency_id?: string;
   public assigned_office?: string;
@@ -53,21 +51,12 @@ export class UserProfile extends BaseModel<IUserProfile, Partial<IUserProfile>> 
             isEmail: true,
           },
         },
-        password_hash: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
         phone_number: {
           type: DataTypes.STRING,
         },
-        role: {
+        role_id: {
           type: DataTypes.STRING,
           allowNull: false,
-        },
-        status: {
-          type: DataTypes.STRING,
-          allowNull: false,
-          defaultValue: 'Active',
         },
         ...BaseModel.baseAttributes,
       },

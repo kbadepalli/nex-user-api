@@ -6,10 +6,8 @@ export interface IUserProfile extends IBaseAttributes {
   first_name: string;
   last_name: string;
   email: string;
-  password_hash: string;
   phone_number?: string;
-  role: string;
-  status: string;
+  role_id: string;
   profile_image_url?: string;
   agency_id?: string;
   assigned_office?: string;
