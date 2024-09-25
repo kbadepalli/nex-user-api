@@ -30,12 +30,12 @@ export const setupDocs = (app: Application) => {
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
   // ReDoc route
-  app.get('/redoc', (req, res) => {
+  app.get('/redoc', (_req, res) => {
     res.sendFile(path.join(__dirname, '../../node_modules/redoc/bundles/redoc.standalone.html'));
   });
 
   // Optional: Redirect from /docs/redoc to /redoc
-  app.get('/docs/redoc', (req, res) => {
+  app.get('/docs/redoc', (_req, res) => {
     res.redirect('/redoc');
   });
 };

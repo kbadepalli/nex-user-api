@@ -7,6 +7,7 @@ import { setupDocs } from './config/swagger';
 import logger from './utils/logger';
 import { errorHandler } from './middlewares/errorHandler';
 import { NotFoundError } from './utils/customErrors';
+import { sequelize, testConnection } from '@/config/database';
 
 
 dotenv.config();
@@ -21,7 +22,7 @@ app.use(helmet());
 app.use(morgan('combined'));
 
 
-app.get('/health', (req: Request, res: Response) => {
+app.get('/health', (_req: Request, res: Response) => {
   res.status(200).json({ status: 'ok', message: 'App is healthy' });
 });
 
@@ -29,7 +30,7 @@ app.get('/health', (req: Request, res: Response) => {
 setupDocs(app);
 
 
-app.all('*', (req: Request, res: Response, next: NextFunction) => {
+app.all('*', (req: Request, _res:Response, next: NextFunction) => {
   next(new NotFoundError(`Can't find ${req.originalUrl} on this server`));
 });
 
@@ -37,10 +38,25 @@ app.all('*', (req: Request, res: Response, next: NextFunction) => {
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  logger.info(`Server is running on http://localhost:${PORT}`);
-  logger.info(`Swagger Docs available at http://localhost:${PORT}/docs`);
-  logger.info(`ReDoc available at http://localhost:${PORT}/redoc`);
-});
+
+const startServer = async () => {
+    try {
+
+      await testConnection();
+  
+      await sequelize.sync({ alter: true });
+  
+      app.listen(PORT, () => {
+        logger.info(`Server is running on http://localhost:${PORT}`);
+        logger.info(`Swagger Docs available at http://localhost:${PORT}/docs`);
+        logger.info(`ReDoc available at http://localhost:${PORT}/redoc`);
+      });
+    } catch (error) {
+      logger.error('Failed to start the server:', error);
+      process.exit(1);
+    }
+  };
+
+  startServer();
 
 export default app;

@@ -2,10 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../utils/customErrors';
 import logger from '../utils/logger';
 
-// Error-handling middleware
 export const errorHandler = (
   err: Error,
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ) => {
